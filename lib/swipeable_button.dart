@@ -56,10 +56,13 @@ class SwipeableButton extends StatefulWidget {
   /// The color of the button.
   final Color? color;
 
-  /// The color of the thumb of the button.
-  final Color? thumbColor;
+  /// Returns a widget representing the thumb of the button, based on the
+  /// [context], the amount of swipe applied to the button (from 0.0 to
+  /// 1.0) as [swipedFraction] and whether the swipe has been completed at least
+  /// once as [hasSwiped].
+  final Widget Function(BuildContext context, double swipedFraction, bool hasSwiped) thumbBuilder;
 
-  /// The border radius of the button.  
+  /// The border radius of the button.
   final BorderRadius? borderRadius;
   
   const SwipeableButton({
@@ -70,10 +73,42 @@ class SwipeableButton extends StatefulWidget {
     this.oneTime = true,
     this.label,
     this.color,
-    this.thumbColor,
+    required this.thumbBuilder,
     this.borderRadius,
   }): super(key: key);
-  
+
+  /// Creates a [SwipeableButton] with a simplified constructor. It uses a
+  /// default thumb, but the [thumbColor] can be changed. If no [thumbColor] has
+  /// been provided, it uses the primary color of the context's theme.
+  SwipeableButton.simple({
+    Key? key,
+    required this.onSwipe,
+    this.height = 40.0,
+    this.minThumbWidth = 40.0,
+    this.oneTime = true,
+    this.label,
+    this.color,
+    Color? thumbColor,
+    this.borderRadius,
+  }) :
+    thumbBuilder = (
+      (BuildContext context, double swipedFraction, bool hasSwiped) => DecoratedBox(
+        decoration: BoxDecoration(color: thumbColor ?? Theme.of(context).primaryColor),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            SizedBox(
+              width: minThumbWidth,
+              child: hasSwiped && oneTime
+                ? const Icon(Icons.check, color: Colors.white)
+                : const Icon(Icons.chevron_right, color: Colors.white),
+            ),
+          ],
+        ),
+      )
+    ),
+    super(key: key);
+
   @override
   State<SwipeableButton> createState() => _SwipeableButtonState();
   
@@ -82,20 +117,20 @@ class SwipeableButton extends StatefulWidget {
 class _SwipeableButtonState extends State<SwipeableButton> {
   
   double? draggingPosition;
-  bool hasConfirmed = false;
+  bool hasSwiped = false;
   
   bool get isDragging => null != draggingPosition;
   
   double get thumbWidth => (null == draggingPosition) ? widget.minThumbWidth : (draggingPosition! + widget.minThumbWidth * 0.5);
 
   void updateDraggingPosition(double? horizontalPosition, double width) {
-    if(hasConfirmed && widget.oneTime) {
+    if(hasSwiped && widget.oneTime) {
       return;
     }
     draggingPosition = (null == horizontalPosition) ? null : horizontalPosition.clamp(widget.minThumbWidth * 0.5, width - widget.minThumbWidth * 0.5);
-    if(!hasConfirmed && (horizontalPosition ?? -double.infinity) >= width - widget.minThumbWidth * 0.5) {
+    if(!hasSwiped && (horizontalPosition ?? -double.infinity) >= width - widget.minThumbWidth * 0.5) {
       widget.onSwipe();
-      hasConfirmed = true;
+      hasSwiped = true;
     }
   }
   
@@ -124,7 +159,7 @@ class _SwipeableButtonState extends State<SwipeableButton> {
           setState(() {
             updateDraggingPosition(null, constraints.maxWidth);
             if(!widget.oneTime) {
-              hasConfirmed = false;
+              hasSwiped = false;
             }
           });
         },
@@ -153,20 +188,7 @@ class _SwipeableButtonState extends State<SwipeableButton> {
                     duration: isDragging ? const Duration() : const Duration(milliseconds: 200),
                     curve: Curves.easeOut,
                     width: thumbWidth,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(color: widget.thumbColor ?? Theme.of(context).primaryColor),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          SizedBox(
-                            width: widget.minThumbWidth,
-                            child: hasConfirmed && widget.oneTime
-                              ? const Icon(Icons.check, color: Colors.white)
-                              : const Icon(Icons.chevron_right, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: widget.thumbBuilder(context, (widget.minThumbWidth - thumbWidth) / (widget.minThumbWidth - constraints.maxWidth), hasSwiped),
                   ),
                 ],
               ),

@@ -1,5 +1,5 @@
 name: swipeable_button
-description: A swipeable button widget.
+description: A customizable button widget that can be triggered by swiping.
 version: 0.0.1
 repository: https://github.com/dthach4/swipeable_button
 
