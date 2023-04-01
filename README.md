@@ -22,7 +22,7 @@ You can check the example page [here](https://dthach4.github.io/swipeable_button
 
 This package has been built for **Flutter**.
 
-Add `swipeable_button: ^0.0.1` to your `pubspec.yaml` dependencies.
+Add `swipeable_button: ^0.1.1` to your `pubspec.yaml` dependencies.
 
 You need to import the library in every file that uses this package by using
 ```dart
