@@ -14,6 +14,10 @@ the width of the thumb.
 - It can match the style of your application: you can customize the color
 of the button, the color of the thumb and the border radius of the button.
 
+## Live Preview
+
+You can check the example page [here](https://dthach4.github.io/swipeable_button/)!
+
 ## Getting started
 
 This package has been built for **Flutter**.
