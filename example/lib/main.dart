@@ -20,7 +20,7 @@ class SwipeableButtonExample1HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text("Swipeable Button Example 1"),
+          title: const Text("Swipeable Button Example"),
         ),
         body: Center(
           child: SizedBox(
@@ -69,23 +69,58 @@ class SwipeableButtonExample1HomePage extends StatelessWidget {
                                   color: Colors.white, fontSize: 16.0))),
                       color: Colors.blue.shade400,
                       thumbBuilder: (BuildContext context,
-                              double swipedFraction, bool hasSwiped) =>
-                          DecoratedBox(
-                            decoration: BoxDecoration(
-                                color: Color.lerp(
-                                    Colors.red, Colors.green, swipedFraction)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 40.0,
-                                  child: hasSwiped
-                                      ? const Icon(Icons.check,
-                                          color: Colors.white)
-                                      : const Icon(Icons.chevron_right,
-                                          color: Colors.white),
-                                ),
-                              ],
+                              double swipedFraction, bool isComplete) =>
+                          SwipeableButtonSimpleThumb(
+                            color: Color.lerp(
+                                    Colors.red, Colors.green, swipedFraction) ??
+                                Colors.red,
+                            iconColor: Colors.black,
+                            minWidth: 40.0,
+                            isComplete: isComplete,
+                          ),
+                      onSwipe: () {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Thank you for swiping!"),
+                        ));
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SwipeableButton(
+                      label: const Center(
+                          child: Text("Custom thumb",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.0))),
+                      color: Colors.blue.shade400,
+                      minThumbWidth: 40.0,
+                      thumbBuilder: (BuildContext context,
+                              double swipedFraction, bool isComplete) =>
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                  color: swipedFraction < 0.5
+                                      ? Color.lerp(Colors.red, Colors.yellow,
+                                          2.0 * swipedFraction)
+                                      : Color.lerp(Colors.yellow, Colors.green,
+                                          2.0 * swipedFraction - 1.0),
+                                  borderRadius: BorderRadius.circular(16.0)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 36.0,
+                                    child: isComplete
+                                        ? const Icon(
+                                            Icons.sentiment_very_satisfied,
+                                            color: Colors.white)
+                                        : const Icon(
+                                            Icons.sentiment_very_dissatisfied,
+                                            color: Colors.white),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                       onSwipe: () {

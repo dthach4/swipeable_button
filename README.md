@@ -31,7 +31,33 @@ import 'package:swipeable_button/swipeable_button.dart';
 
 ## Usage
 
-Place the button wherever you want by creating a `SwipeableButton` widget.
+The `SwipeableButton` class provides named constructors so it's easier to start
+using it.
+
+### Basic usage
+
+You can use the simplified constructor `SwipeableButton.simple` to create a
+`SwipeableButton` widget.
+
+```dart
+SwipeableButton.simple(
+  height: 40.0,
+  minThumbWidth: 40.0,
+  oneTime: true,
+  label: const Text("Delete"),
+  color: Colors.red,
+  thumbColor: Colors.orange,
+  thumbIconColor: Colors.black,
+  borderRadius: BorderRadius.circular(5.0),
+  onSwipe: () {
+    // Perform delete action.
+  },
+)
+```
+
+### Default usage
+
+You can customize the `SwipeableButton` by using the default constructor.
 
 ```dart
 SwipeableButton(
@@ -40,8 +66,32 @@ SwipeableButton(
   oneTime: true,
   label: const Text("Delete"),
   color: Colors.red,
-  thumbColor: Colors.orange,
   borderRadius: BorderRadius.circular(5.0),
+  thumbBuilder: (BuildContext context,
+          double swipedFraction, bool isComplete) =>
+      Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+              color: swipedFraction < 0.5
+                ? Color.lerp(Colors.red, Colors.yellow, 2.0 * swipedFraction)
+                : Color.lerp(Colors.yellow, Colors.green, 2.0 * swipedFraction - 1.0),
+              borderRadius: BorderRadius.circular(16.0)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              SizedBox(
+                width: 36.0,
+                child: isComplete
+                    ? const Icon(Icons.sentiment_very_satisfied,
+                        color: Colors.white)
+                    : const Icon(Icons.sentiment_very_dissatisfied,
+                        color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
   onSwipe: () {
     // Perform delete action.
   },

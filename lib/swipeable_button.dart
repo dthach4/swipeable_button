@@ -56,15 +56,15 @@ class SwipeableButton extends StatefulWidget {
   final Color? color;
 
   /// Returns a widget representing the thumb of the button, based on the
-  /// [context], the amount of swipe applied to the button (from 0.0 to
-  /// 1.0) as [swipedFraction] and whether the swipe has been completed at least
-  /// once as [hasSwiped].
-  final Widget Function(
-      BuildContext context, double swipedFraction, bool hasSwiped) thumbBuilder;
+  /// `context`, the amount of swipe applied to the button (from 0.0 to
+  /// 1.0) as `swipedFraction` and whether the swipe has been completed at least
+  /// once as `hasSwiped`.
+  final SwipeableButtonThumbBuilder thumbBuilder;
 
   /// The border radius of the button.
   final BorderRadius? borderRadius;
 
+  /// Creates a new [SwipeableButton] widget.
   const SwipeableButton({
     Key? key,
     required this.onSwipe,
@@ -77,9 +77,11 @@ class SwipeableButton extends StatefulWidget {
     this.borderRadius,
   }) : super(key: key);
 
-  /// Creates a [SwipeableButton] with a simplified constructor. It uses a
-  /// default thumb, but the [thumbColor] can be changed. If no [thumbColor] has
-  /// been provided, it uses the primary color of the context's theme.
+  /// Creates a [SwipeableButton] via a simplified constructor. It uses a
+  /// [SwipeableButtonSimpleThumb], which [thumbColor] and [thumbIconColor] can
+  /// be changed. If no [thumbColor] has been provided, it uses the primary
+  /// color of the context's theme. If no [thumbIconColor] has been provided, it
+  /// uses [Colors.white].
   SwipeableButton.simple({
     Key? key,
     required this.onSwipe,
@@ -89,24 +91,13 @@ class SwipeableButton extends StatefulWidget {
     this.label,
     this.color,
     Color? thumbColor,
+    Color? thumbIconColor,
     this.borderRadius,
-  })  : thumbBuilder = ((BuildContext context, double swipedFraction,
-                bool hasSwiped) =>
-            DecoratedBox(
-              decoration: BoxDecoration(
-                  color: thumbColor ?? Theme.of(context).primaryColor),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  SizedBox(
-                    width: minThumbWidth,
-                    child: hasSwiped && oneTime
-                        ? const Icon(Icons.check, color: Colors.white)
-                        : const Icon(Icons.chevron_right, color: Colors.white),
-                  ),
-                ],
-              ),
-            )),
+  })  : thumbBuilder = SwipeableButtonSimpleThumb.builder(
+          color: thumbColor,
+          iconColor: thumbIconColor,
+          minWidth: minThumbWidth,
+        ),
         super(key: key);
 
   @override
@@ -202,7 +193,7 @@ class _SwipeableButtonState extends State<SwipeableButton> {
                             context,
                             (widget.minThumbWidth - thumbWidth) /
                                 (widget.minThumbWidth - constraints.maxWidth),
-                            hasSwiped),
+                            widget.oneTime && hasSwiped),
                       ),
                     ],
                   ),
@@ -213,3 +204,85 @@ class _SwipeableButtonState extends State<SwipeableButton> {
         ),
       );
 }
+
+/// A simple thumb widget for a [SwipeableButton].
+///
+/// This widget represents the thumb of a [SwipeableButton] that can be dragged
+/// to trigger it. Its [builder] static method is intended to be used as the
+/// `thumbBuilder` property of a [SwipeableButton].
+///
+/// The [SwipeableButton.simple] constructor implicitly uses this widget.
+///
+/// Example usage:
+///
+/// ```dart
+/// SwipeableButton(
+///   thumbBuilder: SwipeableButtonSimpleThumb.builder({
+///     color: Colors.blue.shade200,
+///     textColor: Colors.black,
+///   }),
+///   ...
+/// )
+/// ```
+@immutable
+class SwipeableButtonSimpleThumb extends StatelessWidget {
+  /// The color of the thumb.
+  final Color color;
+
+  /// The color of the icon on the thumb.
+  final Color iconColor;
+
+  /// The minimum width of the thumb.
+  final double minWidth;
+
+  /// Whether the thumb has been swiped to trigger a one-time [SwipeableButton]
+  /// action (i.e. [SwipeableButton.oneTime] is `true`).
+  final bool isComplete;
+
+  /// Creates a new [SwipeableButtonSimpleThumb] widget. This should be used
+  /// inside of a [SwipeableButtonThumbBuilder] function.
+  const SwipeableButtonSimpleThumb({
+    Key? key,
+    required this.color,
+    required this.iconColor,
+    required this.minWidth,
+    required this.isComplete,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: color,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            SizedBox(
+              width: minWidth,
+              child: isComplete
+                  ? Icon(Icons.check, color: iconColor)
+                  : Icon(Icons.chevron_right, color: iconColor),
+            ),
+          ],
+        ),
+      );
+
+  /// Returns a builder for a [SwipeableButtonSimpleThumb] to be used in the
+  /// constructor of [SwipeableButton]. The [minWidth] parameter should be the
+  /// same as the [SwipeableButton.minThumbWidth] attribute.
+  static SwipeableButtonThumbBuilder builder(
+      {Color? color, Color? iconColor, double? minWidth}) {
+    return (BuildContext context, double swipedFraction, bool isComplete) =>
+        SwipeableButtonSimpleThumb(
+          color: color ?? Theme.of(context).primaryColor,
+          iconColor: iconColor ?? Colors.white,
+          minWidth: minWidth ?? 40.0,
+          isComplete: isComplete,
+        );
+  }
+}
+
+/// A builder for a thumb widget of a [SwipeableButton]. It should be used in
+/// as a value for the attribute [SwipeableButton.thumbBuilder].
+typedef SwipeableButtonThumbBuilder = Widget Function(
+    BuildContext context, double swipedFraction, bool isComplete);
