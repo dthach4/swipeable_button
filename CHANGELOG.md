@@ -1,3 +1,9 @@
+## 0.2.2
+
+ * Added class `SwipeableButtonSimpleSlidableThumb` which is used for the
+   `SwipeableButton.simpleSlidable` named constructor.
+ * Docs: Fixed documentation and example.
+
 ## 0.1.1
 
 * Added class `SwipeableButtonSimpleThumb` which is used for the
