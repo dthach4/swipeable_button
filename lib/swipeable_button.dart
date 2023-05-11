@@ -38,5 +38,5 @@
 library swipeable_button;
 
 export 'src/typedefs/thumb_builder.dart';
-export 'src/widgets/simple_thumb.dart';
+export 'src/widgets/thumbs/simple_thumb.dart';
 export 'src/widgets/swipeable_button.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swipeable_button/src/typedefs/thumb_builder.dart';
-import 'package:swipeable_button/src/widgets/simple_thumb.dart';
+import 'package:swipeable_button/src/widgets/thumbs/simple_thumb.dart';
 
 /// A button that triggers an action on swipe.
 @immutable
