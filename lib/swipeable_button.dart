@@ -21,8 +21,15 @@
 ///   oneTime: true,
 ///   label: const Text("Delete"),
 ///   color: Colors.red,
-///   thumbColor: Colors.orange,
 ///   borderRadius: BorderRadius.circular(5.0),
+///   thumbBuilder: (BuildContext context, double swipedFraction, bool isComplete) =>
+///     SwipeableButtonSimpleThumb(
+///       color: Color.lerp(Colors.red, Colors.green, swipedFraction) ?? Colors.red,
+///       iconColor: Colors.black,
+///       minWidth: 40.0,
+///       isComplete: isComplete,
+///     ),
+///   },
 ///   onSwipe: () {
 ///     // Perform delete action.
 ///   },
