@@ -87,6 +87,43 @@ class SwipeableButtonExample1HomePage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
+                  child: SwipeableButton.simpleSlidable(
+                      label: const Center(
+                          child: Text("Slidable blue button",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.0))),
+                      color: Colors.blue.shade400,
+                      thumbColor: Colors.blue.shade800,
+                      onSwipe: () {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Thank you for swiping!"),
+                        ));
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: 
+                    SwipeableButton.simpleSlidable(
+                      label: const Center(
+                          child: Text("Slidable red button",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.0))),
+                      height: 40.0,
+                      minThumbWidth: 40.0,
+                      oneTime: true,
+                      color: Colors.red.shade400,
+                      thumbColor: Colors.red.shade800,
+                      borderRadius: BorderRadius.circular(5.0),
+                      onSwipe: () {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Thank you for swiping!"),
+                        ));
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: SwipeableButton(
                       label: const Center(
                           child: Text("Custom thumb",

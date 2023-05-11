@@ -35,6 +35,12 @@ class SwipeableButtonSimpleThumb extends StatelessWidget {
   /// action (i.e. [SwipeableButton.oneTime] is `true`).
   final bool isComplete;
 
+  /// The icon shown on the thumb.
+  final IconData icon;
+
+  /// The icon shown on the thumb after the button has been triggered.
+  final IconData iconCompleted;
+
   /// Creates a new [SwipeableButtonSimpleThumb] widget. This should be used
   /// inside of a [SwipeableButtonThumbBuilder] function.
   const SwipeableButtonSimpleThumb({
@@ -43,6 +49,8 @@ class SwipeableButtonSimpleThumb extends StatelessWidget {
     required this.iconColor,
     required this.minWidth,
     required this.isComplete,
+    this.icon = Icons.chevron_right,
+    this.iconCompleted = Icons.check,
   }) : super(key: key);
 
   @override
@@ -55,9 +63,8 @@ class SwipeableButtonSimpleThumb extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: minWidth,
-              child: isComplete
-                  ? Icon(Icons.check, color: iconColor)
-                  : Icon(Icons.chevron_right, color: iconColor),
+              child: Icon(isComplete ? iconCompleted : icon, color: iconColor),
+
             ),
           ],
         ),
@@ -67,13 +74,20 @@ class SwipeableButtonSimpleThumb extends StatelessWidget {
   /// constructor of [SwipeableButton]. The [minWidth] parameter should be the
   /// same as the [SwipeableButton.minThumbWidth] attribute.
   static SwipeableButtonThumbBuilder builder(
-      {Color? color, Color? iconColor, double? minWidth}) {
+      {Color? color,
+      Color? iconColor,
+      double? minWidth,
+      IconData? icon,
+      IconData? iconCompleted,
+    }) {
     return (BuildContext context, double swipedFraction, bool isComplete) =>
         SwipeableButtonSimpleThumb(
           color: color ?? Theme.of(context).primaryColor,
           iconColor: iconColor ?? Colors.white,
           minWidth: minWidth ?? 40.0,
           isComplete: isComplete,
+          icon: icon ?? Icons.chevron_right,
+          iconCompleted: iconCompleted ?? Icons.check,
         );
   }
 }

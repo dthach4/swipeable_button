@@ -4,15 +4,15 @@ A swipeable button widget.
 
 ## Features
 
-- Customizable size: you can manually specify the height of the button and
-the width of the thumb.
+- Customizable size: you can manually specify the height of the button. It
+  takes the width from its parent element.
 
 - Make it either triggerable one time only or infinite times.
 
 - The label shown on the button can be **any** widget
 
 - It can match the style of your application: you can customize the color
-of the button, the color of the thumb and the border radius of the button.
+  of the button and fully customize the thumb!
 
 ## Live Preview
 
@@ -22,7 +22,7 @@ You can check the example page [here](https://dthach4.github.io/swipeable_button
 
 This package has been built for **Flutter**.
 
-Add `swipeable_button: ^0.1.1` to your `pubspec.yaml` dependencies.
+Add `swipeable_button: ^0.2.0` to your `pubspec.yaml` dependencies.
 
 You need to import the library in every file that uses this package by using
 ```dart
@@ -41,10 +41,45 @@ You can use the simplified constructor `SwipeableButton.simple` to create a
 
 ```dart
 SwipeableButton.simple(
+  label: const Center(
+    child: Text(
+      "Delete",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+      ),
+    ),
+  ),
   height: 40.0,
   minThumbWidth: 40.0,
   oneTime: true,
-  label: const Text("Delete"),
+  color: Colors.red,
+  thumbColor: Colors.orange,
+  thumbIconColor: Colors.black,
+  borderRadius: BorderRadius.circular(5.0),
+  onSwipe: () {
+    // Perform delete action.
+  },
+)
+```
+
+There is also a simplified constructor `SwipaebleButton.simpleSlidable` that
+creates a `SwipeableButton` widget with a slidable thumb.
+
+```dart
+SwipeableButton.simpleSlidable(
+  label: const Center(
+    child: Text(
+      "Delete",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+      ),
+    ),
+  ),
+  height: 40.0,
+  minThumbWidth: 40.0,
+  oneTime: true,
   color: Colors.red,
   thumbColor: Colors.orange,
   thumbIconColor: Colors.black,

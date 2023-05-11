@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swipeable_button/src/typedefs/thumb_builder.dart';
 import 'package:swipeable_button/src/widgets/thumbs/simple_thumb.dart';
+import 'package:swipeable_button/src/widgets/thumbs/simple_slidable_thumb.dart';
 
 /// A button that triggers an action on swipe.
 @immutable
@@ -60,13 +61,48 @@ class SwipeableButton extends StatefulWidget {
     this.oneTime = true,
     this.label,
     this.color,
+    this.borderRadius,
     Color? thumbColor,
     Color? thumbIconColor,
-    this.borderRadius,
+    IconData? thumbIcon,
+    IconData? thumbIconCompleted,
   })  : thumbBuilder = SwipeableButtonSimpleThumb.builder(
           color: thumbColor,
           iconColor: thumbIconColor,
           minWidth: minThumbWidth,
+          icon: thumbIcon,
+          iconCompleted: thumbIconCompleted,
+        ),
+        super(key: key);
+
+  /// Creates a [SwipeableButton] via a simplified constructor. It uses a
+  /// [SwipeableButtonSimpleSlidableThumb], which [thumbColor] and
+  /// [thumbIconColor] can be changed. If no [thumbColor] has been provided, it
+  /// uses the primary color of the context's theme. If no [thumbIconColor] has
+  /// been provided, it uses [Colors.white].
+  SwipeableButton.simpleSlidable({
+    Key? key,
+    required this.onSwipe,
+    this.height = 40.0,
+    this.minThumbWidth = 40.0,
+    this.oneTime = true,
+    this.label,
+    this.color,
+    this.borderRadius,
+    Color? thumbColor,
+    Color? thumbIconColor,
+    IconData? thumbIcon,
+    IconData? thumbIconCompleted,
+    double? thumbBorderRadius,
+    double? thumbPadding,
+  }): thumbBuilder = SwipeableButtonSimpleSlidableThumb.builder(
+          color: thumbColor,
+          iconColor: thumbIconColor,
+          width: minThumbWidth,
+          borderRadius: thumbBorderRadius,
+          padding: thumbPadding,
+          icon: thumbIcon,
+          iconCompleted: thumbIconCompleted,
         ),
         super(key: key);
 

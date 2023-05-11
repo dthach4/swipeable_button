@@ -16,11 +16,19 @@
 ///
 /// ```dart
 /// SwipeableButton(
+///  label: const Center(
+///      child: Text(
+///        "Delete",
+///        style: TextStyle(
+///          color: Colors.white,
+///          fontSize: 16.0,
+///        ),
+///      ),
+///   ),
 ///   height: 40.0,
 ///   minThumbWidth: 40.0,
 ///   oneTime: true,
-///   label: const Text("Delete"),
-///   color: Colors.red,
+///   color: Colors.blue,
 ///   borderRadius: BorderRadius.circular(5.0),
 ///   thumbBuilder: (BuildContext context, double swipedFraction, bool isComplete) =>
 ///     SwipeableButtonSimpleThumb(
@@ -29,7 +37,6 @@
 ///       minWidth: 40.0,
 ///       isComplete: isComplete,
 ///     ),
-///   },
 ///   onSwipe: () {
 ///     // Perform delete action.
 ///   },
