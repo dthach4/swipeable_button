@@ -1,4 +1,4 @@
-## 0.2.2
+## 0.2.0
 
  * Added class `SwipeableButtonSimpleSlidableThumb` which is used for the
    `SwipeableButton.simpleSlidable` named constructor.
