@@ -103,8 +103,7 @@ class SwipeableButtonExample1HomePage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: 
-                    SwipeableButton.simpleSlidable(
+                  child: SwipeableButton.simpleSlidable(
                       label: const Center(
                           child: Text("Slidable red button",
                               style: TextStyle(

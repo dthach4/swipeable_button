@@ -95,7 +95,7 @@ class SwipeableButton extends StatefulWidget {
     IconData? thumbIconCompleted,
     double? thumbBorderRadius,
     double? thumbPadding,
-  }): thumbBuilder = SwipeableButtonSimpleSlidableThumb.builder(
+  })  : thumbBuilder = SwipeableButtonSimpleSlidableThumb.builder(
           color: thumbColor,
           iconColor: thumbIconColor,
           width: minThumbWidth,

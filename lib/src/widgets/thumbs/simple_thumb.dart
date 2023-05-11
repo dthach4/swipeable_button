@@ -64,7 +64,6 @@ class SwipeableButtonSimpleThumb extends StatelessWidget {
             SizedBox(
               width: minWidth,
               child: Icon(isComplete ? iconCompleted : icon, color: iconColor),
-
             ),
           ],
         ),
@@ -73,13 +72,13 @@ class SwipeableButtonSimpleThumb extends StatelessWidget {
   /// Returns a builder for a [SwipeableButtonSimpleThumb] to be used in the
   /// constructor of [SwipeableButton]. The [minWidth] parameter should be the
   /// same as the [SwipeableButton.minThumbWidth] attribute.
-  static SwipeableButtonThumbBuilder builder(
-      {Color? color,
-      Color? iconColor,
-      double? minWidth,
-      IconData? icon,
-      IconData? iconCompleted,
-    }) {
+  static SwipeableButtonThumbBuilder builder({
+    Color? color,
+    Color? iconColor,
+    double? minWidth,
+    IconData? icon,
+    IconData? iconCompleted,
+  }) {
     return (BuildContext context, double swipedFraction, bool isComplete) =>
         SwipeableButtonSimpleThumb(
           color: color ?? Theme.of(context).primaryColor,
